@@ -14,3 +14,16 @@ def get_traffic_data():
 
 if __name__ == '__main__':
     app.run(debug=True)
+import paho.mqtt.client as mqtt
+
+def on_message(client, userdata, message):
+    # Handle incoming traffic data from IoT devices here
+    traffic_data = message.payload.decode('utf-8')
+    # Update the data in your database or data analysis pipeline
+
+client = mqtt.Client()
+client.on_message = on_message
+client.connect("broker_address", 1883, 60)
+client.subscribe("traffic_data_topic")
+
+client.loop_forever()
